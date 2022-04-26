@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ethan's Borger Joint</title>
+    <style>
+        canvas {
+            border:1px solid #d3d3d3;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body onload="startGame()">
+    <script>
+
+//global variables
+var item1;
+var item2;
+var item3;
+var item4;
+var item5;
+var item6;
+var item7;
+var item8;
+var book;
+var orderScreen;
+var scoreDisplay;
+var checkButton;
+var clearButton;
+var checkText;
+var clearText;
+var myScore;
+var reqValue;
+var inputValue;
+var reqItem;
+var product1;
+var myProducts;
+var products;
+var gameOver;
+var overText;
+var finalText;
+var pauseButton;
+var pauseScreen;
+var timeLeft;
+var downloadTimer;
+var recipeBook;
+var recipes;
+var newLine;
+var recipes;
+var recipe1;
+var paused;
+var borgerjoint;
+var startMsg;
+
+//startgame function, game components
+function startGame() {
+    item1 = new component(75, 75, "bun.png", 20, 320, "image");
+    item2 = new component(75, 75, "patty.jpg", 20, 400, "image");
+    item3 = new component(75, 75, "cheese.jpg", 100, 320, "image");
+    item4 = new component(75, 75, "lettuce_tomato.jpg", 100, 400, "image");
+    item5 = new component(75, 75, "bacon.jpg", 180, 320, "image");
+    item6 = new component(75, 75, "onion.jpg", 180, 400, "image");
+    item7 = new component(75, 75, "pickles.png", 260, 320, "image");
+    item8 = new component(75, 75, "pineapple.jpg", 260, 400, "image");
+    book = new component(75, 155, "#E1C699", 340, 320);
+    orderScreen = new component(300, 200, "black", 275, 25);
+    scoreDisplay = new component("24px", "Comic Sans MS", "black", 465, 470, "text");
+    checkButton = new component(100, 30, "#7CFC00", 420, 390);
+    clearButton = new component(100, 30, "red", 420, 355);
+    checkText = new component("22px", "Comic Sans MS", "black", 441, 415, "text");
+    clearText = new component("22px", "Comic Sans MS", "white", 442, 380, "text");
+    reqItem = new component("20px", "Comic Sans MS", "white", 281, 100, "text");
+    gameOver = new component(600, 480, "black", 0, 0)
+    overText = new component("28px", "Comic Sans MS", "white", 200, 240, "text");
+    finalText = new component("28px", "Comic Sans MS", "white", 155, 300, "text");
+    pauseButton = new component(100, 30, "#FFFF33", 20, 20);
+    pauseScreen = new component(600, 480, "black", 0, 0);
+    pauseText = new component("22px", "Comic Sans MS", "white", 253, 230, "text");
+    recipeBook = new component(600, 480, "white", 0, 0);
+    quotaText = new component("20px", "Comic Sans MS", "black", 5, 25, "text");
+    recipe1 = new component("20px", "Comic Sans MS", "black", 345, 343, "text");
+    recipe2 = new component("20px", "Comic Sans MS", "black", 345, 373, "text");
+    borgerjoint = new component(250, 175, "borgerjoint.jpg", 15, 50, "image");
+    winner = new component(600, 480, "green", 0, 0);
+    newLine = "\r\n";
+    quota = 1000;
+    myScore = 0;
+    reqValue = 0;
+    inputValue = 0;
+    timeLeft = 45;
+    paused = false;
+    myGameArea.start();
+    orders.change()
+    startClock();
+} 
+
+//order screen changer
+var orders = {
+    change : function() {
+        myProducts = ['Hamburger', 'Cheeseburger', 'BLT', 'Hawaiian', 'The Mason', 'The Ishan', 'Chef Special', 'Baconator'];
+        products = myProducts[Math.floor(Math.random() * myProducts.length)];
+        if (products === 'Hamburger') {
+            reqValue = 3;
+            console.log(products)
+        }
+        if (products === 'Cheeseburger') {
+            reqValue = 6;
+            console.log(products)
+        }
+        if (products === 'BLT') {
+            reqValue = 12;
+            console.log(products)
+        }
+        if (products === 'Hawaiian') {
+            reqValue = 18;
+            console.log(products)
+        }
+        if (products === 'The Mason') {
+            reqValue = 8;
+            console.log(products)
+        }
+        if (products === 'The Ishan') {
+            reqValue = 22;
+            console.log(products)
+        }
+        if (products === 'Chef Special') {
+            reqValue = 36;
+            console.log(products)
+        }
+        if (products === 'Baconator') {
+            reqValue = 25;
+            console.log(products)
+        }
+    }
+}
+
+//game area
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 600;
+        this.canvas.height = 480;
+        startMsg = "Welcome to Ethan's Borger Joint"
+        startMsg += newLine;
+        startMsg += "The game starts once you dismiss this alert."
+        alert(startMsg);
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.interval = setInterval(updateGameArea, 1);
+        window.addEventListener('mousedown', function (e) {
+            myGameArea.x = e.pageX;
+            myGameArea.y = e.pageY;
+            myGameArea.clear();
+
+
+            //item gatherer
+            if (myGameArea.x && myGameArea.y) {
+                if (item1.clicked()) {
+                    inputValue = inputValue += 1;
+                    console.log(inputValue);
+                }
+                if (item2.clicked()) {
+                    inputValue = inputValue += 2;
+                    console.log(inputValue);
+                }
+                if (item3.clicked()) {
+                    inputValue = inputValue += 3;
+                    console.log(inputValue);
+                }
+                if (item4.clicked()) {
+                    inputValue = inputValue += 4;
+                    console.log(inputValue);
+                }
+                if (item5.clicked()) {
+                    inputValue = inputValue += 5;
+                    console.log(inputValue);
+                }
+                if (item6.clicked()) {
+                    inputValue = inputValue += 6;
+                    console.log(inputValue);
+                }
+                if (item7.clicked()) {
+                    inputValue = inputValue += 7;
+                    console.log(inputValue);
+                }
+                if (item8.clicked()) {
+                    inputValue = inputValue += 8;
+                    console.log(inputValue);
+                }
+                if(clearButton.clicked()) {
+                    inputValue = 0;
+                    console.log(inputValue);
+                }
+                //recipe book alert
+                if(book.clicked()) {
+                    recipes = "Here are all the recipes:"
+                    recipes += newLine;
+                    recipes += "Hamburger - Bun, Patty (100 points)";
+                    recipes += newLine;
+                    recipes += "Cheeseburger - Bun, Patty, Cheese (100 points)";
+                    recipes += newLine;
+                    recipes += "BLT - Bun, Patty, Bacon, Lettuce & Tomato (200 points)";
+                    recipes += newLine;
+                    recipes += "*New* Baconator - Bun, 2 Patties, 2 Cheese, 2 Bacon, Lettuce & Tomato (300 points)";
+                    recipes += newLine;
+                    recipes += "Chef Special - 1 of everything (400 points)";
+                    recipes += newLine;
+                    recipes += "Hawaiian - Bun, Patty, Cheese, Lettuce & Tomato, Pineapple (300 points)";
+                    recipes += newLine;
+                    recipes += "The Ishan - Bun, Patty, Cheese, Lettuce & Tomato, Bacon, Pickles (300 points)";
+                    recipes += newLine;
+                    recipes += "The Mason - Bun, Pickles (100 points)";
+
+                    alert(recipes);
+                }
+                //check if item has been created
+                if (checkButton.clicked()) {
+                	correct = true;
+                	if(inputValue === reqValue) {
+                        if (reqValue <= 8) {
+                          myScore = myScore + 100;
+                          inputValue = 0;
+                          correct = false
+                          orders.change();
+                      }
+                      else if (reqValue <= 15) {
+                        myScore = myScore + 200;
+                        correct = false;
+                        orders.change();
+                    } 
+                    else if (reqValue <= 25){
+                        myScore = myScore + 300;
+                        inputValue = 0;
+                        correct = false;
+                        orders.change();
+                    }
+                    else if (reqValue === 36){
+                        myScore = myScore + 400;
+                        inputValue = 0;
+                        correct = false;
+                        orders.change();
+                    }
+                }
+
+                if (correct) {
+                  alert("that is an invalid product. try again.")
+              }
+          }
+      }
+  });
+window.addEventListener('mouseup', function (e) {
+    myGameArea.x = false;
+    myGameArea.y = false;
+});
+}, 
+clear : function(){
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
+}
+        //clock start
+        function startClock() {
+            paused = false;
+            win = false;
+            downloadTimer = setInterval(function(){
+                document.getElementById("countdown").innerHTML = timeLeft + " seconds remaining";
+                timeLeft -= 1;
+                if(timeLeft <= -1){
+                    clearInterval(downloadTimer);
+                    document.getElementById("countdown").innerHTML = "Times Up!"
+                    timesOut = true;
+                    console.log(timesOut);
+                }
+            }, 1000);
+            
+        }
+        //clock stop
+        function stopClock() {
+            timeLeft = timeLeft;
+            clearInterval(downloadTimer);
+            paused = true
+        }
+        function win() {
+            clearInterval(downloadTimer);
+            paused = true;
+            win = true;
+            document.getElementById("countdown").innerHTML = "You Win!"
+        }
+
+        function component(width, height, color, x, y, type) {
+            this.type = type;
+            if (type == "image") {
+                this.image = new Image();
+                this.image.src = color;
+            }
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;    
+            this.x = x;
+            this.y = y;    
+            this.update = function() {
+                ctx = myGameArea.context;
+                if (type == "image") {
+                    ctx.drawImage(this.image, 
+                        this.x, 
+                        this.y,
+                        this.width, this.height);
+                }
+                else {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+                if (this.type == "text") {
+                    ctx.font = this.width + " " + this.height;
+                    ctx.fillStyle = color;
+                    ctx.fillText(this.text, this.x, this.y);
+
+                } 
+            }
+            this.clicked = function() {
+                var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                var clicked = true;
+                if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
+                  clicked = false;
+              }
+              return clicked;
+          }
+      }
+
+//game area update
+function updateGameArea() {
+    if (!paused) {
+        myGameArea.clear();
+        scoreDisplay.text = "Score: " + myScore;
+        scoreDisplay.update();
+        checkButton.update();
+        checkText.text = "Check";
+        checkText.update();
+        orderScreen.update();
+        borgerjoint.update();
+            reqItem.text = "Required Item: " + products; //item required to make is rep. by "products"
+            reqItem.update();
+            item1.update();
+            item2.update();
+            item3.update();
+            item4.update();
+            item5.update();
+            item6.update();
+            item7.update();
+            item8.update();
+            book.update();
+            recipe1.text = "Recipe";
+            recipe1.update();
+            recipe2.text = "Book";
+            recipe2.update();
+            clearButton.update();
+            clearText.text = "Clear";
+            clearText.update();
+            quotaText.text = "You need " + quota + " points to win!"
+            quotaText.update();
+        } else {
+            pauseScreen.update();
+            pauseText.text = "Paused";
+            pauseText.update();
+        }
+        if(timesOut) {
+            gameOver.update();
+            overText.text = "GAME OVER";
+            overText.update();
+            finalText.text = "Your final score is " + myScore;
+            finalText.update();
+        }
+        if (myScore >= quota) {
+                console.log("winner winner chicken dinner");
+                winner.update();
+                clearInterval(downloadTimer);
+                overText.text = "You Win!";
+                overText.update();
+                finalText.text = "Your final score is " + myScore;
+                finalText.update();
+
+        }
+        
+    }
+</script>
+<div id = "countdown" style="font-size: 30px;"></div>
+<button onclick = "stopClock()">Pause</button>
+<button onclick = "startClock()">Resume</button>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
+
